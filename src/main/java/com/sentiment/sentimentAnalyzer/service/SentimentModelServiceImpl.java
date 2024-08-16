@@ -1,5 +1,6 @@
 package com.sentiment.sentimentAnalyzer.service;
 
+import com.sentiment.sentimentAnalyzer.model.SentimentBinaryOutput;
 import com.sentiment.sentimentAnalyzer.model.SentimentStarModelOutput;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -26,7 +27,7 @@ public class SentimentModelServiceImpl {
     @Value("${api.token}")
     private String API_TOKEN;
 
-    public void analyzeSentiment(String text) throws IOException {
+    public SentimentBinaryOutput analyzeSentiment(String text) throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpPost httpPost = new HttpPost(API_URL);
             httpPost.setHeader("Authorization", "Bearer " + API_TOKEN);
@@ -50,6 +51,8 @@ public class SentimentModelServiceImpl {
                     String sentiment = innerObj.getString("label");
                     System.out.println("Sentiment: " + sentiment);
 
+                    return new SentimentBinaryOutput(text, responseBody, sentiment);
+
                 } catch (JSONException e) {
                     throw new RuntimeException("Failed to parse the response JSON.", e);
                 }
@@ -61,6 +64,7 @@ public class SentimentModelServiceImpl {
 
     public SentimentStarModelOutput analyzeSentimentStars(String text) throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            System.out.println("Text: " + text);
             HttpPost httpPost = new HttpPost(STAR_API_URL);
             httpPost.setHeader("Authorization", "Bearer " + API_TOKEN);
             httpPost.setHeader("Content-Type", "application/json");

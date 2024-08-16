@@ -1,6 +1,7 @@
 package com.sentiment.sentimentAnalyzer.api;
 
 import com.sentiment.sentimentAnalyzer.dto.SentimentTextDto;
+import com.sentiment.sentimentAnalyzer.model.SentimentBinaryOutput;
 import com.sentiment.sentimentAnalyzer.model.SentimentOutput;
 import com.sentiment.sentimentAnalyzer.model.SentimentStarModelOutput;
 import com.sentiment.sentimentAnalyzer.service.SentimentModelServiceImpl;
@@ -37,9 +38,10 @@ public class SentimentController {
     }
 
     @PostMapping("/binary")
-    public void getBinarySentiment(@RequestBody SentimentTextDto dto) throws IOException {
+    public ResponseEntity<?> getBinarySentiment(@RequestBody SentimentTextDto dto) throws IOException {
         System.out.println(dto.getText());
-        sentimentModelService.analyzeSentiment(dto.getText());
+        SentimentBinaryOutput response = sentimentModelService.analyzeSentiment(dto.getText());
+        return ResponseEntity.ok(response);
 
 
 
@@ -48,6 +50,7 @@ public class SentimentController {
 
     @PostMapping("/stars")
     public ResponseEntity<?> sentimentByStars(@RequestBody SentimentTextDto dto) throws IOException {
+        System.out.println(dto.getText());
         SentimentStarModelOutput response = sentimentModelService.analyzeSentimentStars(dto.getText());
         return ResponseEntity.ok(response);
     }
