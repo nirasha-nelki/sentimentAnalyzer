@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is an approach on how to invoke the sentiment analysis models using Spring Boot. It's built using Spring Boot and provides [some features or functionalities your project offers].
+This project is an approach on how to invoke sentiment analysis models using Spring Boot. It's built using Spring Boot, and upon calling the endpoint, it returns the sentiment score and other metadata.
 
 ## Prerequisites
 
